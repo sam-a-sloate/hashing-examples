@@ -1,0 +1,17 @@
+plugins {
+    id 'java'
+}
+
+group 'org.sam'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'de.mkammerer:argon2-jvm:2.7'
+    // https://mvnrepository.com/artifact/org.mindrot/jbcrypt
+    implementation 'org.mindrot:jbcrypt:0.4'
+
+}
