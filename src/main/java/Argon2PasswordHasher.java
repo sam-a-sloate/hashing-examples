@@ -27,7 +27,7 @@ public class Argon2PasswordHasher implements PasswordHasher{
 	}
 
 	@Override
-	public boolean verify(String password, String hash) {
+	public boolean verify(String hash, String password) {
 		return argon2.verify(hash, password.getBytes(StandardCharsets.UTF_8));
 	}
 }

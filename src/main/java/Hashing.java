@@ -2,6 +2,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
 
 public class Hashing {
 
@@ -76,17 +77,37 @@ public class Hashing {
 	}
 
 
-	public static void main(String[] args) throws NoSuchAlgorithmException {
+	public static void main(String[] args) throws NoSuchAlgorithmException, InvalidKeySpecException {
 		Hashing hasher = new Hashing();
-		String hashedPassword = hasher.hashSha256NoSalt("password");
+		String password = "password";
+		String hashedPassword = hasher.hashSha256NoSalt(password);
 		System.out.println("Just Hashed Password: " + hashedPassword);
 
-		String hashedWithBadSalt = hasher.hashSha256BadSalt("password");
+		String hashedWithBadSalt = hasher.hashSha256BadSalt(password);
 		System.out.println("Hashed with a bad Salt Password: " + hashedWithBadSalt);
 
 
-		String hashedWithWellGeneratedSalt = hasher.hashSha256GoodSalt("password");
+		String hashedWithWellGeneratedSalt = hasher.hashSha256GoodSalt(password);
 		System.out.println("Hashed with a good Salt Password: " + hashedWithWellGeneratedSalt);
+
+		PasswordHasher argon2PasswordHasher = new Argon2PasswordHasher();
+		String argon2PasswordHash = argon2PasswordHasher.hash(password);
+		System.out.println("Argon2 password: " + argon2PasswordHash);
+		boolean argon2Verify = argon2PasswordHasher.verify(argon2PasswordHash, password);
+		System.out.println("Argon2 verify: " + argon2Verify);
+
+
+		PasswordHasher bcryptPasswordHasher = new BcryptPasswordHasher();
+		String bcryptPasswordHash = bcryptPasswordHasher.hash(password);
+		System.out.println("Bcrypt password: " + bcryptPasswordHash);
+		boolean bcryptVerify = bcryptPasswordHasher.verify(bcryptPasswordHash, password);
+		System.out.println("Bcrypt verify: " + bcryptVerify);
+
+		PasswordHasher pbkdf2PasswordHasher = new PBKDF2PasswordHasher();
+		String pbkf2Hash = pbkdf2PasswordHasher.hash(password);
+		System.out.println("PBKF2 password: " + pbkf2Hash);
+		boolean pbkf2Verify = pbkdf2PasswordHasher.verify(pbkf2Hash, password);
+		System.out.println("PBKF2 verify: " + pbkf2Verify);
 
 
 	}
